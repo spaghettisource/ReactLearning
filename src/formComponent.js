@@ -15,44 +15,55 @@ function MyForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
     setFormData({
-      name: '',
-      email: '',
-      message: ''
+      title: '',
+      description: '',
     });
+
+    try {
+      const response = await fetch('http://localhost:3000/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create todo');
+      }
+
+      const data = await response.json();
+      console.log('New todo created:', data);
+      // You can perform additional actions after successful submission, like updating state or displaying a success message
+    } catch (error) {
+      console.error('Error creating todo:', error);
+      // Handle error scenarios, e.g., display an error message to the user
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="name">Name:</label>
+        <label htmlFor="title">Title:</label>
         <input
           type="text"
-          id="name"
-          name="name"
-          value={formData.name}
+          id="title"
+          name="title"
+          value={formData.title}
           onChange={handleChange}
         />
       </div>
       <div>
-        <label htmlFor="email">Email:</label>
+        <label htmlFor="description">Description:</label>
         <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="message">Message:</label>
-        <textarea
-          id="message"
-          name="message"
-          value={formData.message}
+          type="text"
+          id="description"
+          name="description"
+          value={formData.description}
           onChange={handleChange}
         />
       </div>

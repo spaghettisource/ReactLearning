@@ -21,17 +21,52 @@ const MyComponent = () => {
       }
     };
 
-    
+
 
     fetchData();
   }, []);
-    const logMessage = async () => {
-      console.log("function called");
-      const response = await fetch('http://localhost:3000/todos');
-      console.log(response);
-    };
+  const logMessage = async () => {
+    console.log("function called");
+    const response = await fetch('http://localhost:3000/todos');
+    console.log(response);
+  };
 
- 
+  const handleUpdate = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/todos/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ description: "---", completed: true })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update todo');
+      }
+
+      const updatedTodo = await response.json();
+      setData(data.map(todo => todo.id === id ? updatedTodo : todo));
+    } catch (error) {
+      console.error('Error updating todo:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/todos/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete todo');
+      }
+
+      setData(data.filter(todo => todo.id !== id));
+    } catch (error) {
+      console.error('Error deleting todo:', error);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -47,7 +82,10 @@ const MyComponent = () => {
       {data && (
         <ul>
           {data.map(item => (
-            <li key={item.id}>{item.description}</li>
+            <li key={item.id}>{item.description}
+              <button onClick={() => handleUpdate(item.id)}>Complete</button>
+              <button onClick={() => handleDelete(item.id)}>Delete</button>
+            </li>
           ))}
         </ul>
       )}
