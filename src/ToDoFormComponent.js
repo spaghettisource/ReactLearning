@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 
 function MyForm() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    title: '',
+    description: ''
   });
 
   const handleChange = (e) => {
