@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const MyComponent = () => {
+const ToDoComponent = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -126,4 +126,4 @@ const MyComponent = () => {
   );
 };
 
-export default MyComponent;
+export default ToDoComponent;

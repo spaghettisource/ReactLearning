@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function MyForm() {
+function ToDoFormComponent() {
   const [formData, setFormData] = useState({
     title: '',
     description: ''
@@ -71,4 +71,4 @@ function MyForm() {
   );
 }
 
-export default MyForm;
+export default ToDoFormComponent;
